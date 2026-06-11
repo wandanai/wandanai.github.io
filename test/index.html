@@ -1,1 +1,57 @@
-ไปเว็ปนี้ https://github.com/wandanai/wandanai.github.io/blob/main/test/index.html
+1.  d:
+2.  npm create nuxt@latest
+3.  code d:\name -r
+4.  npm i -D vuetify vite-plugin-vuetify @mdi/font
+5.  แก้ app.vue
+
+<template>
+  <NuxtLayout>
+    <v-app>
+      <NuxtPage />
+    </v-app>
+  </NuxtLayout>
+</template>
+
+
+6.  สร้าง plugins/vuetify.ts
+
+// import this after install `@mdi/font` package
+import '@mdi/font/css/materialdesignicons.css'
+
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+
+export default defineNuxtPlugin((app) => {
+  const vuetify = createVuetify({
+    // ... your configuration
+  })
+  app.vueApp.use(vuetify)
+})
+
+
+7.  แก้ nuxt.config.ts
+
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+export default defineNuxtConfig({
+  //...
+  build: {
+    transpile: ['vuetify'],
+  },
+  vite: {
+    plugins: [
+      // @ts-expect-error
+      vuetify({ autoImport: true }),
+    ],
+    vue: {
+      template: {
+        transformAssetUrls,
+      },
+    },
+  },
+})
+
+
+8.  สร้าง pages/index.vue
+9 ดึง app.vue ออก
+สร้าง public/img/
+npx nuxi generate
