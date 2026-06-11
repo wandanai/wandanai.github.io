@@ -1,305 +1,76 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>วัฒนธรรมไทยที่สาบสูญ</title>
-  <style>
-    body {
-      font-family: "Tahoma", "Sarabun", sans-serif;
-      line-height: 1.7;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      color: #222;
-      background: #fafafa;
-    }
-    h1 {
-      color: #8a5a00;
-      border-bottom: 3px solid #d4a017;
-      padding-bottom: 8px;
-    }
-    h2 { color: #5a3d00; margin-top: 28px; }
-    h3 { color: #333; }
-    hr { border: none; border-top: 1px solid #ccc; margin: 24px 0; }
-    ul { padding-left: 22px; }
-    li { margin-bottom: 6px; }
-    .box {
-      background: #fff;
-      border-left: 4px solid #d4a017;
-      padding: 12px 16px;
-      margin: 16px 0;
-      border-radius: 4px;
-    }
+<template>
+    <div>
+        <v-container>
+            <center>
+                <v-img :width="235" :height="235" src="\img\profile.jpg"></v-img>
+                <br>
+                <v-card width=300>
+                    <v-card-text>
+                        <p>วรรณดนัย แซ่เฮ้ง ซีซี</p>
+                        <p>ปวส 1/1 เทคโนโลยีสารสนเทศ</p>
+                    </v-card-text>
+                </v-card>
+                <br>
+                <v-row>
+                    <v-col cols=6>
+                        <v-card height=230>
+                            <v-card-title class=bg-blue>ประวัติส่วนตัว</v-card-title>
+                            <v-card-text class=bg-lighten-4 >
+                                <p align=left>ชื่อ-นามสกุล: วรรณดนัย แซ่เฮ้ง</p>
+                                <p align=left>วันเกิด: 25 กันยายน 2550</p>
+                                <p align=left>เพศ: ชาย</p>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
 
-    /* ===== POPUP ===== */
-    #overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 9000;
-      align-items: center;
-      justify-content: center;
-    }
-    #overlay.show { display: flex; }
-    .popup {
-      background: #fff;
-      width: 320px;
-      max-width: 90%;
-      border-radius: 12px;
-      padding: 24px 20px 20px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-      position: relative;
-      animation: pop 0.25s ease;
-    }
-    @keyframes pop {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .popup h3 { margin: 0 0 8px; color: #8a5a00; }
-    .popup p { margin: 0 0 18px; font-size: 14px; color: #555; }
-    .popup .btn {
-      background: #d4a017;
-      color: #fff;
-      border: none;
-      padding: 12px 22px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .popup .btn:hover { background: #b88a0f; }
-    .popup .close {
-      position: absolute;
-      top: 8px;
-      right: 12px;
-      border: none;
-      background: transparent;
-      font-size: 22px;
-      cursor: pointer;
-      color: #999;
-      line-height: 1;
-    }
-    .popup .close:hover { color: #333; }
-
-    /* ===== XD PAGE ===== */
-    #xd {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: white;
-      overflow: hidden;
-      z-index: 9999;
-    }
-    #character {
-      position: absolute;
-      left: -400px;
-      bottom: 50px;
-      width: 400px;
-      height: 400px;
-      transition: left 0.3s ease;
-    }
-    #character img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-    }
-    .random-image {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 8px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-    .random-image.show { opacity: 1; }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-    .bouncing { animation: bounce 0.15s ease; }
-  </style>
-</head>
-<body>
-  <!-- ===== บทความ ===== -->
-  <h1>วัฒนธรรมไทยที่สาบสูญ</h1>
-
-  <h2>ความหมายและความสำคัญ</h2>
-  <p>วัฒนธรรม หมายถึง ความดี ความงาม ความเจริญในชีวิตมนุษย์ ซึ่งปรากฏเป็นรูปแบบต่างๆ เช่น ภาษา ขนบธรรมเนียม วัฒนธรรมไทยมีความหลากหลายและสั่งสมมาอย่างยาวนาน แต่ปัจจุบันหลายสิ่งได้เริ่มเลือนหายไปจากสังคม</p>
-
-  <hr>
-
-  <h2>ตัวอย่างวัฒนธรรมไทยที่สาบสูญ</h2>
-
-  <div class="box">
-    <h3>1. การละเล่นพื้นบ้าน</h3>
-    <p>การละเล่นพื้นบ้านของเด็กไทยสมัยก่อน เช่น เดินกะลา ม้าก้านกล้วย กาฟักไข่ งูกินหาง ในปัจจุบันนั้นหายากมากหรือแทบจะไม่มีให้เห็น อาจเป็นเพราะอิทธิพลของโทรศัพท์มือถือและพ่อแม่ที่ไม่ได้ถ่ายทอดการละเล่นเหล่านี้ให้ลูกๆ ทำให้การละเล่นพื้นบ้านค่อยๆ เลือนหายไป</p>
-  </div>
-
-  <div class="box">
-    <h3>2. บ้านทรงไทยใต้ถุนสูง</h3>
-    <p>การสร้างบ้านเรือนไทยแบบดั้งเดิม เมื่อประเทศรับเอาการสร้างบ้านด้วยปูนจากต่างประเทศเข้ามา บ้านทรงไทยใต้ถุนสูงก็หายไปในพริบตา ยังมีให้เห็นอยู่บ้างในชนบทของทุกๆ ภูมิภาค</p>
-  </div>
-
-  <div class="box">
-    <h3>3. ภาษาถิ่น</h3>
-    <p>เมื่อภาษาถิ่นสูญหายไป ภูมิปัญญาที่ผูกติดอยู่กับภาษานั้นก็จะหายไปด้วย เช่น ชื่อสมุนไพรและวิธีการรักษาโรคแผนโบราณ ต่างอัตลักษณ์และความเชื่อมั่นในตนเองของคนในท้องถิ่นก็จะเลือนหายตามไปด้วย</p>
-  </div>
-
-  <hr>
-
-  <h2>สาเหตุที่วัฒนธรรมสาบสูญ</h2>
-  <ul>
-    <li>กระแสโลกาภิวัตน์และเทคโนโลยีสมัยใหม่</li>
-    <li>คนรุ่นใหม่ไม่ได้รับการถ่ายทอดจากคนรุ่นก่อน</li>
-    <li>ค่านิยมที่เปลี่ยนแปลงไปตามยุคสมัย</li>
-  </ul>
-
-  <hr>
-
-  <h2>แนวทางการอนุรักษ์</h2>
-  <ul>
-    <li>บันทึกและเผยแพร่ความรู้ผ่านสื่อสมัยใหม่</li>
-    <li>ส่งเสริมในหลักสูตรการศึกษา</li>
-    <li>สร้างความภาคภูมิใจในวัฒนธรรมท้องถิ่น</li>
-  </ul>
-
-  <!-- ===== POPUP ===== -->
-  <div id="overlay">
-    <div class="popup">
-      <button class="close" onclick="closePopup()" aria-label="ปิด">&times;</button>
-      <h3>🎉 ยินดีด้วย!</h3>
-      <p>คุณได้รับรางวัลพิเศษ กดปุ่มด้านล่างเพื่อรับเลย!</p>
-      <button class="btn" onclick="openXD()">กดรับรางวัล</button>
+                    <v-col cols=6>
+                        <v-raw>
+                            <v-col cols=6>
+                                <v-img :width="250" :height="100" src="\img\profile.jpg"></v-img>
+                            </v-col>
+                            <v-col cols=6>
+                                <br>
+                                <v-img :width="250" :height="100" src="\img\profile.jpg"></v-img>
+                            </v-col>
+                        </v-raw>
+                    </v-col>
+                </v-row>
+                <br><br><br>
+                <v-row>
+                    <v-col cols=4>
+                        <v-card height=200>
+                            <v-card-title class=bg-blue>ความสามารถ/กีฬาที่ชอบ</v-card-title>
+                            <v-card-text class=bg-lighten-4 >
+                                <p>สามารถเดิน กระโดด กินข้าว นอน และอื่นๆ</p>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols=4>
+                        <v-card height=200>
+                            <v-card-title class=bg-blue>สิ่งที่ชื่นชอบ</v-card-title>
+                            <v-card-text class=bg-lighten-4 >
+                                <p align=left>เล่นเกม Minecraft ,Osu! ,Geometry Dash, Blue archive</p>
+                                <p align=left>ดูอนิเมะ</p>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols=4>
+                        <v-card height=200>
+                            <v-card-title class=bg-blue>ความใฝ่ฝัน</v-card-title>
+                            <v-card-text class=bg-lighten-4 >
+                                <p align=left>อยากให้ครูกดลิ้งนี้ <span><a href="https://wandanai.github.io/" target="_blank">https://wandanai.github.io/</a></span> และห้ามกดออกจนกว่าคอมจะพัง</p>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </center>
+        </v-container>
     </div>
-  </div>
+</template>
+<script lang="ts">
+import { v } from 'vue-router/dist/index-BQLwgiyK.js';
 
-  <!-- ===== XD PAGE ===== -->
-  <div id="xd">
-    <div id="character">
-      <img src="https://static.wikitide.net/bluearchivewiki/3/3b/Mika_00.png" alt="Character" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23ffd700%22 rx=%2210%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%22150%22%3E🎭%3C/text%3E%3C/svg%3E'">
-    </div>
-  </div>
 
-  <script>
-    /* ===== POPUP LOGIC ===== */
-    const overlay = document.getElementById('overlay');
-    let popupTimer = null;
+</script>
+<style scoped></style>
 
-    function showPopup() {
-      overlay.classList.add('show');
-    }
-    function closePopup() {
-      overlay.classList.remove('show');
-      // โผล่อีกครั้งใน 20 วินาที
-      clearTimeout(popupTimer);
-      popupTimer = setTimeout(showPopup, 20000);
-    }
-
-    // โผล่ครั้งแรกหลังโหลด 3 วิ
-    popupTimer = setTimeout(showPopup, 3000);
-
-    /* ===== XD LOGIC ===== */
-    function openXD() {
-      overlay.classList.remove('show');
-      clearTimeout(popupTimer);
-      const xd = document.getElementById('xd');
-      xd.style.display = 'block';
-      setTimeout(jump, 1000);
-    }
-
-    const character = document.getElementById('character');
-    const characterImg = character.querySelector('img');
-
-    const imageUrls = [
-      'https://i.pinimg.com/236x/9a/94/a8/9a94a8106097886630670cd2291f7844.jpg',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxBsajVoYcVVn87SqbRYW1DVB4V7CXCQaGnmc4yHuTZg&s=10',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvFKLXzonB6hrh2YpCLUyaO0XTeretee5Uwf5Ma4Gt2g&s=10',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGyzapBm3wN3CooaGS1tRmpMR_0X3nBsJAJz7aKp6X_r87wpHovt00upfa&s=10',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROTOFdJykkFcFRqCtgWSQXdrA-xNbHS56AdZ94b7wp1eNgYbb4SSZVDVo&s=10',
-      'https://cdn.donmai.us/original/1c/fb/1cfb5635bdf056b1ec427584f473c444.jpg',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpyoPuCkadM9wiiCxzSsBh1Q6FO3pkx-BgHQ6KeUj88A&s=10'
-    ];
-
-    let position = -400;
-    const updateTargetPosition = () => (window.innerWidth / 2) - 200;
-    let targetPosition = updateTargetPosition();
-    let jumpCount = 0;
-    const totalJumps = 20;
-
-    window.addEventListener('resize', () => {
-      targetPosition = updateTargetPosition();
-      if (jumpCount >= totalJumps) {
-        character.style.left = targetPosition + 'px';
-      }
-    });
-
-    function jump() {
-      if (jumpCount < totalJumps) {
-        character.classList.add('bouncing');
-        setTimeout(() => character.classList.remove('bouncing'), 150);
-
-        const jumpDistance = (targetPosition - position) / (totalJumps - jumpCount);
-        position += jumpDistance;
-        character.style.left = position + 'px';
-        jumpCount++;
-
-        const nextJumpDelay = 200 + Math.random() * 100;
-        setTimeout(jump, nextJumpDelay);
-      } else {
-        setTimeout(() => {
-          characterImg.src = 'https://static.wikitide.net/bluearchivewiki/e/e0/Mika_10.png';
-          setTimeout(startImageSpawn, 500);
-        }, 500);
-      }
-    }
-
-    function startImageSpawn() {
-      let baseDelay = 500;
-      let spawnTime = 0;
-      const maxTime = 2500;
-
-      function spawnImage() {
-        const img = document.createElement('img');
-        img.className = 'random-image';
-        img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-        img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-        img.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-        document.getElementById('xd').appendChild(img);
-        setTimeout(() => img.classList.add('show'), 50);
-
-        spawnTime += baseDelay;
-        if (spawnTime < maxTime) {
-          baseDelay = Math.max(1, baseDelay * 0.75);
-          setTimeout(spawnImage, baseDelay);
-        } else {
-          apocalypse();
-        }
-      }
-
-      // โหมดสุดท้าย: สแปมรูปรัวๆ (ใช้ setInterval แทน while(true) เพื่อให้เบราว์เซอร์ไม่ค้างสนิท)
-      function apocalypse() {
-        setInterval(() => {
-          const frag = document.createDocumentFragment();
-          for (let i = 0; i < 200; i++) {
-            const img = document.createElement('img');
-            img.className = 'random-image show';
-            img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-            img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-            img.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-            frag.appendChild(img);
-          }
-          document.getElementById('xd').appendChild(frag);
-        }, 50);
-      }
-
-      spawnImage();
-    }
-  </script>
-</body>
-</html>
