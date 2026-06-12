@@ -1,0 +1,68 @@
+#include <Arduino.h>
+int led1 = 14;
+int led2 = 12;
+int led3 = 13;
+int button1 = 2;
+int button2 = 4;
+int state1 = 0;
+int state2 = 0;
+void setup()
+{
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(button1, INPUT);
+  pinMode(button2, INPUT);
+  digitalWrite(led1, 0);
+  digitalWrite(led2, 0);
+  digitalWrite(led3, 0);
+}
+
+void loop()
+{
+  state1 = digitalRead(button1);
+  state2 = digitalRead(button2);
+  if (state1 == 1)
+  {
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    delay(500);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 0);
+    delay(200);
+  }
+  else
+  {
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+  }
+
+    if (state2 == 1)
+  {
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 0);
+    delay(200);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    delay(500);
+  }
+  else
+  {
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+  }
+}
