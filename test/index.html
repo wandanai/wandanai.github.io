@@ -1,57 +1,129 @@
-1.  d:<br>
-2.  npm create nuxt@latest<br>
-3.  code d:\name -r<br>
-4.  npm i -D vuetify vite-plugin-vuetify @mdi/font<br>
-5.  แก้ app.vue<br>
-<br>
-<template><br>
-  <NuxtLayout><br>
-    <v-app><br>
-      <NuxtPage /><br>
-    </v-app><br>
-  </NuxtLayout><br>
-</template><br>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visitor Insights</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <main class="min-h-screen flex flex-col items-center justify-center gap-6 px-4 text-center">
+    <span class="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-700 px-4 py-1 text-sm font-medium">
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-600"></span>
+      </span>
+      กำลังเก็บข้อมูลผู้เข้าชม
+    </span>
+    <h1 class="text-4xl font-bold tracking-tight text-balance">ยินดีต้อนรับสู่เว็บไซต์</h1>
+    <p class="max-w-md text-slate-500 leading-relaxed text-pretty">
+      ระบบกำลังบันทึกข้อมูลการเข้าชมของคุณลงใน Supabase โดยอัตโนมัติ
+    </p>
+    <p id="status" class="text-sm text-slate-400">กำลังส่งข้อมูล...</p>
+  </main>
 
-<br><br>
-6.  สร้าง plugins/vuetify.ts<br>
+  <script>
+    // ====== แก้ 2 บรรทัดนี้ ======
+    const SUPABASE_URL = "https://ipcfkaqgfrevxnvdzjfz.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_Zul6OJfy9jOHlLgA2jIKAQ_IFMd4Lkk";
+    // =============================
 
-// import this after install `@mdi/font` package<br>
-import '@mdi/font/css/materialdesignicons.css'<br>
+    (function () {
+      const startTime = Date.now();
+      let maxScroll = 0;
+      let clicks = 0;
 
-import 'vuetify/styles'<br>
-import { createVuetify } from 'vuetify'<br>
+      // ติดตามการเลื่อนหน้า
+      window.addEventListener("scroll", function () {
+        const scrolled = window.scrollY + window.innerHeight;
+        const pct = Math.round((scrolled / document.body.scrollHeight) * 100);
+        if (pct > maxScroll) maxScroll = Math.min(pct, 100);
+      });
 
-export default defineNuxtPlugin((app) => {<br>
-  const vuetify = createVuetify({<br>
-    // ... your configuration<br>
-  })<br>
-  app.vueApp.use(vuetify)<br>
-})<br>
-<br>
-<br>
-7.  แก้ nuxt.config.ts<br>
-<br>
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'<br>
-export default defineNuxtConfig({<br>
-  //...<br>
-  build: {<br>
-    transpile: ['vuetify'],<br>
-  },<br>
-  vite: {<br>
-    plugins: [<br>
-      // @ts-expect-error<br>
-      vuetify({ autoImport: true }),<br>
-    ],<br>
-    vue: {<br>
-      template: {<br>
-        transformAssetUrls,<br>
-      },<br>
-    },<br>
-  },<br>
-})<br>
+      // ติดตามการคลิก
+      window.addEventListener("click", function () { clicks++; });
 
+      // ตรวจชนิดอุปกรณ์/OS/เบราว์เซอร์ จาก User-Agent
+      function parseUA(ua) {
+        let device = "Desktop";
+        if (/iPhone|iPod/.test(ua)) device = "iPhone";
+        else if (/iPad/.test(ua)) device = "iPad";
+        else if (/Android/.test(ua)) device = /Mobile/.test(ua) ? "Android Phone" : "Android Tablet";
+        else if (/Mobile/.test(ua)) device = "Mobile";
 
-8.  สร้าง pages/index.vue
-9 ดึง app.vue ออก
-สร้าง public/img/
-npx nuxi generate
+        let os = "Unknown";
+        if (/Windows NT 10/.test(ua)) os = "Windows 10/11";
+        else if (/Windows/.test(ua)) os = "Windows";
+        else if (/Mac OS X/.test(ua)) os = "macOS";
+        else if (/Android/.test(ua)) os = "Android";
+        else if (/iPhone|iPad|iPod/.test(ua)) os = "iOS";
+        else if (/Linux/.test(ua)) os = "Linux";
+
+        let browser = "Unknown";
+        if (/Edg\//.test(ua)) browser = "Edge";
+        else if (/OPR\//.test(ua)) browser = "Opera";
+        else if (/Chrome\//.test(ua)) browser = "Chrome";
+        else if (/Firefox\//.test(ua)) browser = "Firefox";
+        else if (/Safari\//.test(ua)) browser = "Safari";
+
+        return { device, os, browser };
+      }
+
+      const ua = navigator.userAgent;
+      const { device, os, browser } = parseUA(ua);
+
+      function send() {
+        const payload = {
+          visited_at: new Date().toISOString(),
+          page_url: window.location.href,
+          referrer: document.referrer || null,
+          language: navigator.language,
+          user_agent: ua,
+          device: device,
+          os: os,
+          browser: browser,
+          screen_width: window.screen.width,
+          screen_height: window.screen.height,
+          viewport_width: window.innerWidth,
+          viewport_height: window.innerHeight,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          scroll_depth: maxScroll,
+          clicks: clicks,
+          duration_seconds: Math.round((Date.now() - startTime) / 1000),
+        };
+
+        // ใช้ sendBeacon ตอนปิดหน้า เพื่อไม่ให้ข้อมูลหาย
+        const url = SUPABASE_URL + "/rest/v1/visits";
+        const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+            "Prefer": "return=minimal",
+          },
+          body: JSON.stringify(payload),
+          keepalive: true,
+        })
+          .then(function (res) {
+            document.getElementById("status").textContent =
+              res.ok ? "บันทึกข้อมูลสำเร็จ ✓" : "เกิดข้อผิดพลาด: " + res.status;
+          })
+          .catch(function (e) {
+            document.getElementById("status").textContent = "ส่งข้อมูลไม่สำเร็จ";
+          });
+      }
+
+      // ส่งตอนผู้ใช้กำลังจะออกจากหน้า (ได้เวลา/scroll/clicks ครบ)
+      window.addEventListener("pagehide", send);
+      // เผื่อ pagehide ไม่ทำงาน ส่งหลัง 15 วิ ด้วย
+      setTimeout(send, 15000);
+    })();
+  </script>
+</body>
+</html>
