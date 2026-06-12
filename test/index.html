@@ -20,7 +20,6 @@
     </span>
     <p id="status" class="text-sm text-slate-400">รอแปปน๊า...</p>
   </main>
-
   <script>
     // ====== แก้ 2 บรรทัดนี้ ======
     const SUPABASE_URL = "https://ipcfkaqgfrevxnvdzjfz.supabase.co";
@@ -31,6 +30,7 @@
       const startTime = Date.now();
       let maxScroll = 0;
       let clicks = 0;
+      let sent = false; // กันส่งซ้ำ
 
       // ติดตามการเลื่อนหน้า
       window.addEventListener("scroll", function () {
@@ -71,7 +71,37 @@
       const ua = navigator.userAgent;
       const { device, os, browser } = parseUA(ua);
 
+      // ขอ "รุ่นอุปกรณ์" จาก UA Client Hints (Android/Chrome ได้รหัสรุ่นจริง,
+      // iPhone/Safari ไม่รองรับ จะ fallback เป็น "iPhone")
+      async function getDeviceModel() {
+        try {
+          if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+            const hints = await navigator.userAgentData.getHighEntropyValues([
+              "model",
+              "platformVersion",
+              "platform",
+            ]);
+            if (hints.model) return hints.model; // เช่น "SM-G991B", "Pixel 7"
+          }
+        } catch (e) {
+          // เงียบไว้ ถ้าเบราว์เซอร์ไม่รองรับ
+        }
+        // fallback สำหรับ iPhone/Safari: ดึงจาก User-Agent
+        if (/iPhone/.test(ua)) return "iPhone";
+        if (/iPad/.test(ua)) return "iPad";
+        const m = ua.match(/$$([^)]+)$$/);
+        return m ? m[1] : null;
+      }
+
+      // ดึงรุ่นไว้ล่วงหน้าตั้งแต่เปิดหน้า เพราะ getHighEntropyValues เป็น async
+      // ถ้ารอตอน pagehide จะไม่ทัน รุ่นจะหลุด
+      let cachedModel = null;
+      getDeviceModel().then(function (m) { cachedModel = m; });
+
       function send() {
+        if (sent) return; // ส่งครั้งเดียวพอ
+        sent = true;
+
         const payload = {
           visited_at: new Date().toISOString(),
           page_url: window.location.href,
@@ -79,6 +109,7 @@
           language: navigator.language,
           user_agent: ua,
           device: device,
+          device_model: cachedModel, // ใช้ค่าที่ดึงไว้ล่วงหน้า
           os: os,
           browser: browser,
           screen_width: window.screen.width,
@@ -91,9 +122,7 @@
           duration_seconds: Math.round((Date.now() - startTime) / 1000),
         };
 
-        // ใช้ sendBeacon ตอนปิดหน้า เพื่อไม่ให้ข้อมูลหาย
         const url = SUPABASE_URL + "/rest/v1/visits";
-        const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
 
         fetch(url, {
           method: "POST",
@@ -108,7 +137,7 @@
         })
           .then(function (res) {
             document.getElementById("status").textContent =
-              res.ok ? "บันทึกข้อมูลสำเร็จ ✓" : "เกิดข้อผิดพลาด: " + res.status;
+              res.ok ? "บันทึกข้อมูลสำเร็จ" : "เกิดข้อผิดพลาด: " + res.status;
           })
           .catch(function (e) {
             document.getElementById("status").textContent = "ส่งข้อมูลไม่สำเร็จ";
@@ -121,5 +150,5 @@
       setTimeout(send, 15000);
     })();
   </script>
-</body>
+    </body>
 </html>
