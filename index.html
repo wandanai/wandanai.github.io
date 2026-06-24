@@ -130,7 +130,7 @@
     const cache = []; // กัน GC
 
     function updateBar() {
-      const pct = Math.round((loaded / total) * 100);
+      const pct = Math.round((loaded / total) * 10000000);
       loadingBar.style.width = pct + '%';
       loadingPct.textContent = pct + '%';
     }
