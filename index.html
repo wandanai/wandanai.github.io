@@ -12,6 +12,46 @@
       overflow: hidden;
       height: 100%;
     }
+
+    /* ===== LOADING PAGE ===== */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      gap: 20px;
+      font-family: sans-serif;
+    }
+    #loading.hidden { display: none; }
+    #loading-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: #555;
+    }
+    #loading-bar-wrap {
+      width: 300px;
+      height: 16px;
+      background: #eee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    #loading-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f9a8d4, #818cf8);
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+    #loading-pct {
+      font-size: 16px;
+      color: #888;
+    }
+
+    /* ===== XD PAGE ===== */
     #xd {
       position: fixed;
       inset: 0;
@@ -39,8 +79,11 @@
       height: 100px;
       object-fit: cover;
       border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.15s ease;
       pointer-events: none;
     }
+    .random-image.show { opacity: 1; transition: none; }
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-15px); }
@@ -49,6 +92,16 @@
   </style>
 </head>
 <body>
+  <!-- ===== LOADING PAGE ===== -->
+  <div id="loading">
+    <div id="loading-text">⏳ กรุณารอสักครู่...</div>
+    <div id="loading-bar-wrap">
+      <div id="loading-bar"></div>
+    </div>
+    <div id="loading-pct">0%</div>
+  </div>
+
+  <!-- ===== XD PAGE ===== -->
   <div id="xd">
     <div id="character">
       <img src="https://static.wikitide.net/bluearchivewiki/3/3b/Mika_00.png" alt="Character" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23ffd700%22 rx=%2210%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%22150%22%3E🎭%3C/text%3E%3C/svg%3E'">
@@ -66,6 +119,41 @@
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpyoPuCkadM9wiiCxzSsBh1Q6FO3pkx-BgHQ6KeUj88A&s=10'
     ];
 
+    const loadingEl   = document.getElementById('loading');
+    const loadingBar  = document.getElementById('loading-bar');
+    const loadingPct  = document.getElementById('loading-pct');
+    const loadingText = document.getElementById('loading-text');
+
+    // ── Preload รูปทุกใบ ──────────────────────────────────────────────
+    let loaded = 0;
+    const total = imageUrls.length;
+    const cache = []; // กัน GC
+
+    function updateBar() {
+      const pct = Math.round((loaded / total) * 10000000);
+      loadingBar.style.width = pct + '%';
+      loadingPct.textContent = pct + '%';
+    }
+
+    function tryStart() {
+      if (loaded / total >= 0.5) {
+        loadingEl.classList.add('hidden');
+        startAnimation();
+      }
+    }
+
+    imageUrls.forEach(url => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        loaded++;
+        updateBar();
+        tryStart();
+      };
+      img.src = url;
+      cache.push(img);
+    });
+
+    // ── Animation ──────────────────────────────────────────────────────
     function startAnimation() {
       const character    = document.getElementById('character');
       const characterImg = character.querySelector('img');
@@ -75,6 +163,8 @@
       let targetPosition = updateTargetPosition();
       let jumpCount = 0;
       const totalJumps = 10;
+      // 10 jumps ใน 2.5 วิ → interval 250ms (ลดความเร็วลง 1 เท่าจาก 90ms × 2 ≈ 180ms... แต่โจทย์บอก 2.5 วิรวม)
+      // 2500ms / 10 jumps = 250ms ต่อ jump
       const jumpInterval = 250;
 
       window.addEventListener('resize', () => {
@@ -103,22 +193,22 @@
 
       function apocalypse() {
         const xd = document.getElementById('xd');
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < 500000; i++) {
-          const img = document.createElement('img');
-          img.className = 'random-image';
-          img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-          img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-          img.style.top  = Math.random() * (window.innerHeight - 100) + 'px';
-          frag.appendChild(img);
-        }
-        xd.appendChild(frag);
+        setInterval(() => {
+          const frag = document.createDocumentFragment();
+          for (let i = 0; i < 1000; i++) {
+            const img = document.createElement('img');
+            img.className = 'random-image show';
+            img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+            img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            img.style.top  = Math.random() * (window.innerHeight - 100) + 'px';
+            frag.appendChild(img);
+          }
+          xd.appendChild(frag);
+        }, 10);
       }
 
       setTimeout(jump, 200);
     }
-
-    startAnimation();
   </script>
 </body>
 </html>
