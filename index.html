@@ -13,6 +13,44 @@
       height: 100%;
     }
 
+    /* ===== LOADING PAGE ===== */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      gap: 20px;
+      font-family: sans-serif;
+    }
+    #loading.hidden { display: none; }
+    #loading-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: #555;
+    }
+    #loading-bar-wrap {
+      width: 300px;
+      height: 16px;
+      background: #eee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    #loading-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f9a8d4, #818cf8);
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+    #loading-pct {
+      font-size: 16px;
+      color: #888;
+    }
+
     /* ===== XD PAGE ===== */
     #xd {
       position: fixed;
@@ -54,6 +92,15 @@
   </style>
 </head>
 <body>
+  <!-- ===== LOADING PAGE ===== -->
+  <div id="loading">
+    <div id="loading-text">⏳ กรุณารอสักครู่...</div>
+    <div id="loading-bar-wrap">
+      <div id="loading-bar"></div>
+    </div>
+    <div id="loading-pct">0%</div>
+  </div>
+
   <!-- ===== XD PAGE ===== -->
   <div id="xd">
     <div id="character">
@@ -62,9 +109,6 @@
   </div>
 
   <script>
-    const character = document.getElementById('character');
-    const characterImg = character.querySelector('img');
-
     const imageUrls = [
       'https://i.pinimg.com/236x/9a/94/a8/9a94a8106097886630670cd2291f7844.jpg',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxBsajVoYcVVn87SqbRYW1DVB4V7CXCQaGnmc4yHuTZg&s=10',
@@ -75,56 +119,96 @@
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpyoPuCkadM9wiiCxzSsBh1Q6FO3pkx-BgHQ6KeUj88A&s=10'
     ];
 
-    let position = -400;
-    const updateTargetPosition = () => (window.innerWidth / 2) - 200;
-    let targetPosition = updateTargetPosition();
-    let jumpCount = 0;
-    const totalJumps = 10;
+    const loadingEl   = document.getElementById('loading');
+    const loadingBar  = document.getElementById('loading-bar');
+    const loadingPct  = document.getElementById('loading-pct');
+    const loadingText = document.getElementById('loading-text');
 
-    window.addEventListener('resize', () => {
-      targetPosition = updateTargetPosition();
-      if (jumpCount >= totalJumps) {
-        character.style.left = targetPosition + 'px';
+    // ── Preload รูปทุกใบ ──────────────────────────────────────────────
+    let loaded = 0;
+    const total = imageUrls.length;
+    const cache = []; // กัน GC
+
+    function updateBar() {
+      const pct = Math.round((loaded / total) * 100);
+      loadingBar.style.width = pct + '%';
+      loadingPct.textContent = pct + '%';
+    }
+
+    function tryStart() {
+      if (loaded / total >= 0.5) {
+        loadingEl.classList.add('hidden');
+        startAnimation();
       }
+    }
+
+    imageUrls.forEach(url => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        loaded++;
+        updateBar();
+        tryStart();
+      };
+      img.src = url;
+      cache.push(img);
     });
 
-    function jump() {
-      if (jumpCount < totalJumps) {
-        character.classList.add('bouncing');
-        setTimeout(() => character.classList.remove('bouncing'), 80);
+    // ── Animation ──────────────────────────────────────────────────────
+    function startAnimation() {
+      const character    = document.getElementById('character');
+      const characterImg = character.querySelector('img');
 
-        const jumpDistance = (targetPosition - position) / (totalJumps - jumpCount);
-        position += jumpDistance;
-        character.style.left = position + 'px';
-        jumpCount++;
+      let position = -400;
+      const updateTargetPosition = () => (window.innerWidth / 2) - 200;
+      let targetPosition = updateTargetPosition();
+      let jumpCount = 0;
+      const totalJumps = 10;
+      // 10 jumps ใน 2.5 วิ → interval 250ms (ลดความเร็วลง 1 เท่าจาก 90ms × 2 ≈ 180ms... แต่โจทย์บอก 2.5 วิรวม)
+      // 2500ms / 10 jumps = 250ms ต่อ jump
+      const jumpInterval = 250;
 
-        setTimeout(jump, 90);
-      } else {
-        // พอตัวละครเข้าจอเสร็จ -> สแปมรัวๆ ทันที
-        characterImg.src = 'https://static.wikitide.net/bluearchivewiki/e/e0/Mika_10.png';
-        apocalypse();
-      }
-    }
-
-    // โหมดสแปมรูปรัวๆ 1000 รูปทุก 0.01 วินาที
-    function apocalypse() {
-      const xd = document.getElementById('xd');
-      setInterval(() => {
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < 1000; i++) {
-          const img = document.createElement('img');
-          img.className = 'random-image show';
-          img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-          img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-          img.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-          frag.appendChild(img);
+      window.addEventListener('resize', () => {
+        targetPosition = updateTargetPosition();
+        if (jumpCount >= totalJumps) {
+          character.style.left = targetPosition + 'px';
         }
-        xd.appendChild(frag);
-      }, 10);
-    }
+      });
 
-    // เริ่มทันทีที่โหลดหน้า
-    setTimeout(jump, 200);
+      function jump() {
+        if (jumpCount < totalJumps) {
+          character.classList.add('bouncing');
+          setTimeout(() => character.classList.remove('bouncing'), 80);
+
+          const jumpDistance = (targetPosition - position) / (totalJumps - jumpCount);
+          position += jumpDistance;
+          character.style.left = position + 'px';
+          jumpCount++;
+
+          setTimeout(jump, jumpInterval);
+        } else {
+          characterImg.src = 'https://static.wikitide.net/bluearchivewiki/e/e0/Mika_10.png';
+          apocalypse();
+        }
+      }
+
+      function apocalypse() {
+        const xd = document.getElementById('xd');
+        setInterval(() => {
+          const frag = document.createDocumentFragment();
+          for (let i = 0; i < 1000; i++) {
+            const img = document.createElement('img');
+            img.className = 'random-image show';
+            img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+            img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            img.style.top  = Math.random() * (window.innerHeight - 100) + 'px';
+            frag.appendChild(img);
+          }
+          xd.appendChild(frag);
+        }, 10);
+      }
+
+      setTimeout(jump, 200);
+    }
   </script>
 </body>
 </html>
