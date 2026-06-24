@@ -94,7 +94,7 @@
 <body>
   <!-- ===== LOADING PAGE ===== -->
   <div id="loading">
-    <div id="loading-text">⏳ กรุณารอสักครู่...</div>
+    <div id="loading-text">Loading...</div>
     <div id="loading-bar-wrap">
       <div id="loading-bar"></div>
     </div>
@@ -130,7 +130,7 @@
     const cache = []; // กัน GC
 
     function updateBar() {
-      const pct = Math.round((loaded / total) * 10000000);
+      const pct = Math.round((loaded / total) * 10);
       loadingBar.style.width = pct + '%';
       loadingPct.textContent = pct + '%';
     }
@@ -163,8 +163,6 @@
       let targetPosition = updateTargetPosition();
       let jumpCount = 0;
       const totalJumps = 10;
-      // 10 jumps ใน 2.5 วิ → interval 250ms (ลดความเร็วลง 1 เท่าจาก 90ms × 2 ≈ 180ms... แต่โจทย์บอก 2.5 วิรวม)
-      // 2500ms / 10 jumps = 250ms ต่อ jump
       const jumpInterval = 250;
 
       window.addEventListener('resize', () => {
