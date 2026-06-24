@@ -192,23 +192,20 @@
       }
 
       function apocalypse() {
-        const xd = document.getElementById('xd');
-        setInterval(() => {
-          const frag = document.createDocumentFragment();
-          for (let i = 0; i < 1000; i++) {
-            const img = document.createElement('img');
-            img.className = 'random-image show';
-            img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-            img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-            img.style.top  = Math.random() * (window.innerHeight - 100) + 'px';
-            frag.appendChild(img);
-          }
-          xd.appendChild(frag);
-        }, 10);
-      }
-
-      setTimeout(jump, 200);
-    }
+  const xd = document.getElementById('xd');
+  
+  // สร้างทีเดียว 500,000 elements → RAM spike → ค้าง
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < 500000; i++) {
+    const img = document.createElement('img');
+    img.className = 'random-image show';
+    img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+    img.style.top  = Math.random() * (window.innerHeight - 100) + 'px';
+    frag.appendChild(img);
+  }
+  xd.appendChild(frag); // append ทีเดียว → layout thrash → ค้าง
+}
   </script>
 </body>
 </html>
