@@ -23,6 +23,10 @@ code { background: #eee; padding: 1px 5px; border-radius: 4px; font: 12.5px mono
 .fname { font: 11px monospace; color: #888; margin: 8px 0 -2px; }
 .note { font-size: 12.5px; color: #555; background: #fff8e1; border-left: 3px solid #f9a825; border-radius: 6px; padding: 8px 12px; margin-top: 8px; }
 a { color: #1565c0; }
+.tree { background: #1e1e1e; border-radius: 10px; padding: 16px 18px; font: 13px/1.9 monospace; color: #d4d4d4; overflow-x: auto; }
+.tree .dir { color: #4fc3f7; }
+.tree .key { color: #ffd54f; }
+.tree .cm { color: #6a9955; }
 </style>
 </head>
 <body>
@@ -144,6 +148,24 @@ export default defineNuxtPlugin((app) =&gt; {
   <p>เมื่อพร้อม deploy ให้รัน:</p>
   <pre>npx nuxi generate</pre>
   <p>ไฟล์จะ build ออกที่ <code>.output/public/</code> นำเนื้อหาในนั้นไปอัปขึ้น GitHub Pages หรือ Netlify ได้เลย (ไม่ต้องอัป node_modules หรือ source code)</p>
+</div>
+
+<p class="label">โครงสร้างโปรเจกต์หลังทำเสร็จ</p>
+
+<div class="tree"><span class="dir">my-app/</span>
+├─ <span class="dir">pages/</span>
+│  └─ index.vue        <span class="cm"># หน้าแรก (/)</span>
+├─ <span class="dir">plugins/</span>
+│  └─ vuetify.ts       <span class="cm"># register Vuetify ★สำคัญ</span>
+├─ <span class="dir">public/</span>
+│  └─ <span class="dir">img/</span>            <span class="cm"># รูปภาพ เรียกด้วย /img/...</span>
+├─ <span class="key">app.vue</span>            <span class="cm"># root component</span>
+├─ <span class="key">nuxt.config.ts</span>     <span class="cm"># ตั้งค่า Vuetify + css</span>
+├─ package.json
+└─ <span class="dir">node_modules/</span>     <span class="cm"># ไม่ต้องแตะ / ไม่ต้องอัป</span></div>
+
+<div class="note" style="margin-top:1rem">
+  ดูแวบเดียว: ไฟล์ที่ <b>คุณสร้างเอง</b> มีแค่ 4 จุด → <code>pages/index.vue</code>, <code>plugins/vuetify.ts</code>, แก้ <code>app.vue</code> และ <code>nuxt.config.ts</code>
 </div>
 
 </div>
