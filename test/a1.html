@@ -6,28 +6,22 @@
 <title>ติดตั้ง Nuxt + Vuetify</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: sans-serif; background: #f5f5f5; color: #222; padding: 2rem 1rem; }
+body { font-family: sans-serif; background: #f5f5f5; color: #222; line-height: 1.7; padding: 2rem 1rem; }
 .container { max-width: 720px; margin: 0 auto; }
-h1 { font-size: 22px; font-weight: 600; margin-bottom: 0.5rem; }
+h1 { font-size: 22px; margin-bottom: 0.25rem; }
 .subtitle { font-size: 14px; color: #666; margin-bottom: 2rem; }
-.step { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
-.step-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: #fafafa; border-bottom: 1px solid #e0e0e0; }
-.badge { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: #333; color: #fff; font-size: 12px; font-weight: 600; flex-shrink: 0; }
-.badge.special { background: #e65100; }
-.step-title { font-size: 14px; font-weight: 600; }
-.step-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
-.desc { font-size: 13px; color: #555; line-height: 1.7; }
-pre { background: #1e1e1e; color: #d4d4d4; border-radius: 8px; padding: 10px 14px; font-family: monospace; font-size: 13px; overflow-x: auto; white-space: pre; }
-code { font-family: monospace; background: #eee; padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
-.file-block { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
-.file-name { font-size: 11px; font-family: monospace; color: #888; padding: 5px 12px; background: #f0f0f0; border-bottom: 1px solid #e0e0e0; }
-.file-body { padding: 10px 12px; font-family: monospace; font-size: 12.5px; white-space: pre; overflow-x: auto; line-height: 1.7; background: #1e1e1e; color: #d4d4d4; }
-.note { font-size: 12.5px; color: #555; padding: 8px 12px; background: #fff8e1; border-radius: 6px; border-left: 3px solid #f9a825; line-height: 1.6; }
-.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin: 2rem 0 0.75rem; }
-.special-card { background: #fff3e0; border: 1px solid #ffcc80; border-radius: 10px; padding: 14px 18px; margin-bottom: 1.25rem; }
-.special-card .card-title { font-size: 13px; font-weight: 600; color: #e65100; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-.special-card .card-body { font-size: 13px; color: #555; line-height: 1.7; }
-.special-card pre { background: #1e1e1e; color: #d4d4d4; border-radius: 6px; padding: 8px 12px; font-size: 12.5px; margin-top: 8px; }
+.label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin: 2rem 0 0.75rem; }
+.step { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; margin-bottom: 1rem; }
+.step h2 { font-size: 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: #333; color: #fff; font-size: 12px; flex-shrink: 0; }
+.step.special { background: #fff3e0; border-color: #ffcc80; }
+.step.special h2 { color: #e65100; }
+.step.special .num { background: #e65100; }
+p { font-size: 13px; color: #555; }
+pre { background: #1e1e1e; color: #d4d4d4; border-radius: 8px; padding: 10px 14px; font: 13px monospace; white-space: pre; overflow-x: auto; margin: 8px 0; }
+code { background: #eee; padding: 1px 5px; border-radius: 4px; font: 12.5px monospace; }
+.fname { font: 11px monospace; color: #888; margin: 8px 0 -2px; }
+.note { font-size: 12.5px; color: #555; background: #fff8e1; border-left: 3px solid #f9a825; border-radius: 6px; padding: 8px 12px; margin-top: 8px; }
 a { color: #1565c0; }
 </style>
 </head>
@@ -37,163 +31,119 @@ a { color: #1565c0; }
 <h1>ติดตั้ง Nuxt + Vuetify</h1>
 <p class="subtitle">คู่มือตั้งต้นแบบ step-by-step</p>
 
-<p class="section-label">ขั้นตอนหลัก</p>
+<p class="label">ขั้นตอนหลัก</p>
 
 <div class="step">
-  <div class="step-header">
-    <span class="badge">1</span>
-    <span class="step-title">เปิด terminal แล้วไปที่ drive D:</span>
-  </div>
-  <div class="step-body">
-    <pre>d:</pre>
-  </div>
+  <h2><span class="num">1</span> เปิด terminal แล้วไปที่ drive D:</h2>
+  <pre>d:</pre>
 </div>
 
 <div class="step">
-  <div class="step-header">
-    <span class="badge">2</span>
-    <span class="step-title">สร้างโปรเจกต์ Nuxt ใหม่</span>
-  </div>
-  <div class="step-body">
-    <pre>npm create nuxt@latest</pre>
-    <p class="desc">ตั้งชื่อโปรเจกต์ตามต้องการ เช่น <code>my-app</code> จากนั้นกด Enter ไปเรื่อยๆ จนเสร็จ</p>
-  </div>
+  <h2><span class="num">2</span> สร้างโปรเจกต์ Nuxt ใหม่</h2>
+  <pre>npm create nuxt@latest</pre>
+  <p>ตั้งชื่อโปรเจกต์ เช่น <code>my-app</code> แล้วกด Enter ไปเรื่อยๆ จนเสร็จ</p>
 </div>
 
 <div class="step">
-  <div class="step-header">
-    <span class="badge">3</span>
-    <span class="step-title">เปิดโปรเจกต์ใน VS Code</span>
-  </div>
-  <div class="step-body">
-    <pre>code d:\my-app -r</pre>
-    <p class="desc">เปลี่ยน <code>my-app</code> เป็นชื่อโฟลเดอร์ที่ตั้งไว้</p>
-  </div>
+  <h2><span class="num">3</span> เข้าโฟลเดอร์ แล้วติดตั้ง dependencies</h2>
+  <pre>cd my-app
+npm install</pre>
 </div>
 
 <div class="step">
-  <div class="step-header">
-    <span class="badge">4</span>
-    <span class="step-title">แก้ไฟล์ app.vue และย้ายออกมาด้านนอก</span>
-  </div>
-  <div class="step-body">
-    <p class="desc">
-      ไฟล์ <code>app.vue</code> ต้องอยู่ที่ <strong>root ของโปรเจกต์</strong> (ระดับเดียวกับ <code>nuxt.config.ts</code>)
-      ถ้ามันอยู่ในโฟลเดอร์อื่นให้ย้ายออกมาก่อน แล้วแก้เนื้อหาเป็น:
-    </p>
-    <div class="file-block">
-      <div class="file-name">app.vue &nbsp;← วางไว้ที่ root โปรเจกต์</div>
-      <div class="file-body">&lt;template&gt;
+  <h2><span class="num">4</span> เปิดโปรเจกต์ใน VS Code</h2>
+  <pre>code d:\my-app -r</pre>
+  <p>เปลี่ยน <code>my-app</code> เป็นชื่อโฟลเดอร์ที่ตั้งไว้</p>
+</div>
+
+<div class="step">
+  <h2><span class="num">5</span> ติดตั้ง Vuetify และ plugin</h2>
+  <pre>npm i -D vuetify vite-plugin-vuetify @mdi/font</pre>
+  <p><code>@mdi/font</code> คือชุดไอคอนที่ Vuetify ใช้เป็นค่าเริ่มต้น</p>
+</div>
+
+<div class="step">
+  <h2><span class="num">6</span> แก้ไฟล์ app.vue (วางไว้ที่ root)</h2>
+  <p>ไฟล์ <code>app.vue</code> ต้องอยู่ระดับเดียวกับ <code>nuxt.config.ts</code></p>
+  <p class="fname">app.vue</p>
+  <pre>&lt;template&gt;
   &lt;NuxtLayout&gt;
     &lt;NuxtPage /&gt;
   &lt;/NuxtLayout&gt;
-&lt;/template&gt;</div>
-    </div>
-    <div class="note">
-      โครงสร้างโฟลเดอร์ที่ถูก:<br>
-      <code>my-app/</code><br>
-      &nbsp;&nbsp;<code>app.vue</code> ← ตรงนี้<br>
-      &nbsp;&nbsp;<code>nuxt.config.ts</code><br>
-      &nbsp;&nbsp;<code>pages/</code><br>
-      &nbsp;&nbsp;<code>public/</code>
-    </div>
+&lt;/template&gt;</pre>
+  <div class="note">
+    โครงสร้างที่ถูก: <code>my-app/</code> → <code>app.vue</code>, <code>nuxt.config.ts</code>, <code>pages/</code>, <code>plugins/</code>, <code>public/</code>
   </div>
 </div>
 
 <div class="step">
-  <div class="step-header">
-    <span class="badge">5</span>
-    <span class="step-title">แก้ไฟล์ nuxt.config.ts</span>
-  </div>
-  <div class="step-body">
-    <p class="desc">ดูโค้ดได้ที่ <a href="https://vuetifyjs.com/en/getting-started/installation/#manual-setup" target="_blank">Vuetify Manual Setup</a> แล้วคัดลอกค่าตั้งค่าส่วน Nuxt มาใส่</p>
-    <div class="file-block">
-      <div class="file-name">nuxt.config.ts</div>
-      <div class="file-body">import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+  <h2><span class="num">7</span> แก้ไฟล์ nuxt.config.ts</h2>
+  <p>อ้างอิง <a href="https://vuetifyjs.com/en/getting-started/installation/#manual-setup" target="_blank">Vuetify Manual Setup</a></p>
+  <p class="fname">nuxt.config.ts</p>
+  <pre>import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
-  build: {
-    transpile: ['vuetify'],
-  },
+  build: { transpile: ['vuetify'] },
+  css: ['vuetify/styles', '@mdi/font/css/materialdesignicons.css'],
   modules: [
-    (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
+    (_options, nuxt) =&gt; {
+      nuxt.hooks.hook('vite:extendConfig', (config) =&gt; {
         // @ts-expect-error
         config.plugins.push(vuetify({ autoImport: true }))
       })
     },
   ],
   vite: {
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
-    },
+    vue: { template: { transformAssetUrls } },
   },
-})</div>
-    </div>
-  </div>
+})</pre>
 </div>
 
 <div class="step">
-  <div class="step-header">
-    <span class="badge">6</span>
-    <span class="step-title">สร้างโฟลเดอร์ pages และไฟล์ index.vue</span>
-  </div>
-  <div class="step-body">
-    <p class="desc">สร้างโฟลเดอร์ <code>pages/</code> ที่ root แล้วสร้างไฟล์ <code>index.vue</code> ข้างใน</p>
-    <div class="file-block">
-      <div class="file-name">pages/index.vue</div>
-      <div class="file-body">&lt;template&gt;
+  <h2><span class="num">8</span> สร้างไฟล์ plugins/vuetify.ts</h2>
+  <p>ขั้นนี้สำคัญ — ถ้าไม่มี Vuetify จะไม่ถูก register ทำให้ <code>&lt;v-...&gt;</code> ใช้ไม่ได้</p>
+  <p class="fname">plugins/vuetify.ts</p>
+  <pre>import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+export default defineNuxtPlugin((app) =&gt; {
+  const vuetify = createVuetify({ components, directives })
+  app.vueApp.use(vuetify)
+})</pre>
+</div>
+
+<div class="step">
+  <h2><span class="num">9</span> สร้าง pages/index.vue</h2>
+  <p>สร้างโฟลเดอร์ <code>pages/</code> ที่ root แล้วสร้างไฟล์ข้างใน</p>
+  <p class="fname">pages/index.vue</p>
+  <pre>&lt;template&gt;
   &lt;v-container&gt;
     &lt;h1&gt;Hello Nuxt + Vuetify&lt;/h1&gt;
+    &lt;v-btn color="primary"&gt;ปุ่มทดสอบ&lt;/v-btn&gt;
   &lt;/v-container&gt;
-&lt;/template&gt;</div>
-    </div>
-  </div>
+&lt;/template&gt;</pre>
 </div>
 
 <div class="step">
-  <div class="step-header">
-    <span class="badge">7</span>
-    <span class="step-title">ติดตั้ง Vuetify</span>
-  </div>
-  <div class="step-body">
-    <pre>npm i -D vuetify</pre>
-  </div>
+  <h2><span class="num">10</span> รันเพื่อทดสอบ</h2>
+  <pre>npm run dev</pre>
+  <p>เปิด <code>http://localhost:3000</code> ถ้าเห็นปุ่มสีฟ้า แสดงว่า Vuetify ทำงานแล้ว</p>
 </div>
 
-<div class="step">
-  <div class="step-header">
-    <span class="badge">8</span>
-    <span class="step-title">ติดตั้ง vite-plugin-vuetify</span>
-  </div>
-  <div class="step-body">
-    <pre>npm i -D vite-plugin-vuetify</pre>
-  </div>
+<p class="label">คำแนะนำพิเศษ</p>
+
+<div class="step special">
+  <h2><span class="num">★</span> โฟลเดอร์ img สำหรับรูปภาพ</h2>
+  <p>สร้าง <code>public/img/</code> เก็บรูป — ไฟล์ใน <code>public/</code> เรียกใช้ได้ตรงๆ โดยไม่ต้อง import</p>
+  <pre>&lt;img src="/img/banner.jpg" /&gt;</pre>
 </div>
 
-<p class="section-label">คำแนะนำพิเศษ</p>
-
-<div class="special-card">
-  <div class="card-title">★ โฟลเดอร์ img สำหรับรูปภาพ</div>
-  <div class="card-body">
-    สร้างโฟลเดอร์ <code>public/img/</code> สำหรับเก็บรูปภาพทั้งหมด
-    ไฟล์ที่อยู่ใน <code>public/</code> จะถูก serve ตรงๆ โดยไม่ต้อง import เช่น
-    ถ้ามีไฟล์ <code>public/img/banner.jpg</code> ก็เรียกใช้ใน template ได้เลยว่า:
-    <pre>&lt;img src="/img/banner.jpg" /&gt;</pre>
-  </div>
-</div>
-
-<div class="special-card">
-  <div class="card-title">★ Generate ไฟล์สำหรับ deploy (Static Site)</div>
-  <div class="card-body">
-    เมื่อพร้อม deploy ให้รันคำสั่ง:
-    <pre>npx nuxi generate</pre>
-    ไฟล์ทั้งหมดจะถูก build ออกมาที่โฟลเดอร์ <code>.output/public/</code>
-    นำเนื้อหาใน <code>.output/public/</code> ไปอัปโหลดขึ้น GitHub Pages หรือ Netlify ได้เลย
-    (ไม่ต้องอัป node_modules หรือ source code)
-  </div>
+<div class="step special">
+  <h2><span class="num">★</span> Generate ไฟล์สำหรับ deploy (Static)</h2>
+  <p>เมื่อพร้อม deploy ให้รัน:</p>
+  <pre>npx nuxi generate</pre>
+  <p>ไฟล์จะ build ออกที่ <code>.output/public/</code> นำเนื้อหาในนั้นไปอัปขึ้น GitHub Pages หรือ Netlify ได้เลย (ไม่ต้องอัป node_modules หรือ source code)</p>
 </div>
 
 </div>
