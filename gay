@@ -54,7 +54,7 @@ void loop() {
     digitalWrite(Relaypin, 1);
     delay(5000);
     digitalWrite(Relaypin, 0);
-  } else {
+  } if (state1 == 0) {
     oled.clearDisplay();
     oled.setCursor(25, 5);
     oled.println("Yes");
@@ -73,7 +73,7 @@ void loop() {
     digitalWrite(Relaypin, 0);
     delay(100);
     digitalWrite(Relaypin, 1);
-    delay(200);
+    delay(200);q
     digitalWrite(Relaypin, 0);
     delay(100);
     digitalWrite(Relaypin, 1);
