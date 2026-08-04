@@ -1,4 +1,3 @@
-2
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -8,190 +7,78 @@
 Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 int sensor = 25;
 int state1 = 0;
-int Relaypin = 34;
-
-
+int Relaypin = 26;
 void setup() {
-  Serial.begin(9600);
-  Serial.println("");
   pinMode(sensor, INPUT);
+  pinMode(Relaypin, OUTPUT);
   delay(2000);
   oled.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
   oled.clearDisplay();
   oled.setTextColor(WHITE);
   oled.setTextSize(1.5);
   oled.setCursor(5, 5);
-  oled.println("Sensor The Door");
+  oled.println("Sensor Scan");
   oled.setCursor(5, 25);
-  oled.println("Test Examples..");
+  oled.println("Object..");
   oled.display();
-  pinMode(Relaypin, OUTPUT);
 }
 void loop() {
   oled.clearDisplay();
   state1 = digitalRead(sensor);
-  if (state1 == LOW) {
+  if (state1 == 1) {
     oled.clearDisplay();
-    oled.setCursor(20, 5);
-    oled.println("LED");
-    oled.setCursor(20, 30);
-    oled.println("POWER Step..");
-    oled.display();
-    delay(100);
+    oled.setCursor(5, 5);
+    oled.println("==========>5");
+    delay(200);
     oled.clearDisplay();
-    digitalWrite(Relaypin, 1);
+    oled.setCursor(5, 5);
+    oled.println("=========>4");
     delay(200);
-    digitalWrite(Relaypin, 0);
-    delay(100);
-    digitalWrite(Relaypin, 1);
+    oled.clearDisplay();
+    oled.setCursor(5, 5);
+    oled.println("========>3");
     delay(200);
-    digitalWrite(Relaypin, 0);
-    delay(100);
-    digitalWrite(Relaypin, 1);
+    oled.clearDisplay();
+    oled.setCursor(5, 5);
+    oled.println("=======>2");
     delay(200);
-    digitalWrite(Relaypin, 0);
-    delay(100);
+    oled.clearDisplay();
+    oled.setCursor(5, 5);
+    oled.println("=======>1");
+    delay(200);
+    oled.clearDisplay();
+    oled.setCursor(5, 5);
+    oled.println("== Please Waite ==");
+    oled.setCursor(5, 5);
+    oled.println("Sensor Scan Object");
     digitalWrite(Relaypin, 1);
-
+    delay(5000);
+    digitalWrite(Relaypin, 0);
   } else {
     oled.clearDisplay();
-    oled.setCursor(20, 5);
-    oled.println("Close");
-    oled.setCursor(20, 30);
-    oled.println("The Door..");
-    oled.display();
+    oled.setCursor(25, 5);
+    oled.println("Yes");
+    oled.setCursor(5, 5);
+    oled.println("Object..");
     digitalWrite(Relaypin, 1);
+    delay(200);
+    digitalWrite(Relaypin, 0);
+    delay(100);
+    digitalWrite(Relaypin, 1);
+    delay(200);
+    digitalWrite(Relaypin, 0);
+    delay(100);
+    digitalWrite(Relaypin, 1);
+    delay(200);
+    digitalWrite(Relaypin, 0);
+    delay(100);
+    digitalWrite(Relaypin, 1);
+    delay(200);
+    digitalWrite(Relaypin, 0);
+    delay(100);
+    digitalWrite(Relaypin, 1);
+    delay(200);
+    digitalWrite(Relaypin, 0);
+    delay(1000);
   }
-}
-
-
-
-
-1
-#include <Wire.h>
-
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#define OLED_ADDR 0x3c
-
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
-int sensor = 25;
-int state1 = 0;
-int led1 = 15;
-int led2 = 2;
-int led3 = 4;
-int led4 = 5;
-void setup() {
-Serial.begin(9600);
-Serial.println("");
-pinMode(sensor, INPUT);
-delay(2000);
-oled.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
-oled.clearDisplay();
-oled.setTextColor(WHITE);
-oled.setTextSize(1.5);
-oled.setCursor(5, 5);
-oled.println("OLED");
-oled.setCursor(5, 25);
-oled.println("Sensor Test LED");
-oled.display();
-pinMode(led1, OUTPUT);
-pinMode(led2, OUTPUT);
-pinMode(led3, OUTPUT);
-pinMode(led4, OUTPUT);
-
-digitalWrite(led1, 0);
-digitalWrite(led2, 0);
-digitalWrite(led3, 0);
-digitalWrite(led4, 0);
-}
-void loop() {
-oled.clearDisplay();
-state1 = digitalRead(sensor);
-if (state1 == LOW) {
-oled.clearDisplay();
-oled.setCursor(20, 5);
-oled.println("LED");
-oled.setCursor(20, 30);
-oled.println("POWER Step..");
-oled.display();
-delay(100);
-oled.clearDisplay();
-digitalWrite(led1, 1);
-digitalWrite(led2, 0);
-digitalWrite(led3, 0);
-digitalWrite(led4, 1);
-delay(200);
-digitalWrite(led1, 0);
-digitalWrite(led2, 0);
-digitalWrite(led3, 0);
-digitalWrite(led4, 0);
-delay(100);
-digitalWrite(led1, 0);
-digitalWrite(led2, 1);
-digitalWrite(led3, 1);
-digitalWrite(led4, 0);
-
-delay(200);
-digitalWrite(led1, 0);
-digitalWrite(led2, 0);
-digitalWrite(led3, 0);
-digitalWrite(led4, 0);
-delay(100);
-digitalWrite(led1, 1);
-digitalWrite(led2, 1);
-digitalWrite(led3, 1);
-digitalWrite(led4, 1);
-delay(100);
-digitalWrite(led1, 0);
-digitalWrite(led2, 0);
-digitalWrite(led3, 0);
-digitalWrite(led4, 0);
-delay(100);
-digitalWrite(led1, 1);
-digitalWrite(led2, 1);
-digitalWrite(led3, 1);
-digitalWrite(led4, 1);
-delay(100);
-digitalWrite(led1, 0);
-digitalWrite(led2, 0);
-digitalWrite(led3, 0);
-digitalWrite(led4, 0);
-delay(100);
-
-} else {
-oled.clearDisplay();
-oled.setCursor(20, 5);
-oled.println("LED");
-
-oled.setCursor(20, 30);
-oled.println("POWER ON..");
-oled.display();
-digitalWrite(led1, 1);
-digitalWrite(led2, 1);
-digitalWrite(led3, 1);
-digitalWrite(led4, 1);
-delay(200);
-digitalWrite(led1, 0);
-digitalWrite(led2, 0);
-digitalWrite(led3, 0);
-digitalWrite(led4, 0);
-delay(100);
-digitalWrite(led1, 1);
-digitalWrite(led2, 1);
-digitalWrite(led3, 1);
-digitalWrite(led4, 1);
-delay(200);
-digitalWrite(led1, 0);
-digitalWrite(led2, 0);
-digitalWrite(led3, 0);
-digitalWrite(led4, 0);
-delay(100);
-digitalWrite(led1, 1);
-digitalWrite(led2, 1);
-digitalWrite(led3, 1);
-digitalWrite(led4, 1);
-}
 }
