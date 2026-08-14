@@ -125,3 +125,127 @@ BLYNK_WRITE(V2) {
     delay(100);
   }
 }
+
+
+
+
+
+งาน 2
+#define BLYNK_TEMPLATE_ID "TMPL6JcSND73w"
+#define BLYNK_TEMPLATE_NAME "Quickstart Template"
+#define BLYNK_AUTH_TOKEN "1_cM1S2HLyJW-3CmRdrTD4hqpjzPWp8o"
+#define BLYNK_PRINT Serial
+#define OLED_ADDR 0x3c
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+int led1 = 4;
+int led2 = 16;
+
+void setup() {
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  Serial.begin(115200);
+  Blynk.begin(BLYNK_AUTH_TOKEN, "computer", "computer2018");
+
+  delay(2000);
+  oled.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
+  oled.clearDisplay();
+  oled.setTextColor(WHITE);
+  oled.setTextSize(1.5);
+  oled.setCursor(5, 5);
+  oled.println("==TEST LCD==");
+  oled.setCursor(5, 25);
+  oled.println(".. OFF...");
+  oled.display();
+}
+
+void loop() {
+  Blynk.run();
+}
+
+BLYNK_WRITE(V0) {
+  int va0 = param.asInt();
+  if (va0 == 1) {
+    oled.clearDisplay();
+    oled.setCursor(5, 5);
+    oled.println("==STEP 1==");
+    oled.setCursor(5, 25);
+    oled.println("..LED Bing...");
+    oled.display();
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 0);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 0);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+  } else {
+  }
+}
+
+BLYNK_WRITE(V1) {
+  int va1 = param.asInt();
+  if (va1 == 1) {
+    oled.clearDisplay();
+    oled.setCursor(5, 5);
+    oled.println("==STEP 2==");
+    oled.setCursor(5, 25);
+    oled.println("..LED Wow...");
+    oled.display();
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    delay(2000);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    delay(100);
+  }
+}
