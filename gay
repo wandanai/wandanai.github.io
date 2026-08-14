@@ -1,84 +1,127 @@
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#define OLED_ADDR 0x3c
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
-int sensor = 25;
-int state1 = 0;
-int Relaypin = 26;
+#define BLYNK_TEMPLATE_ID "TMPL66JQ-tEJL"
+#define BLYNK_TEMPLATE_NAME "v1"
+#define BLYNK_AUTH_TOKEN "1_cM1S2HLyJW-3CmRdrTD4hqpjzPWp8o"
+#define BLYNK_PRINT Serial
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+
+int led1 = 12;
+int led2 = 14;
+int led3 = 27;
+int led4 = 26;
+
 void setup() {
-  pinMode(sensor, INPUT);
-  pinMode(Relaypin, OUTPUT);
-  delay(2000);
-  oled.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
-  oled.clearDisplay();
-  oled.setTextColor(WHITE);
-  oled.setTextSize(1.5);
-  oled.setCursor(5, 5);
-  oled.println("Sensor Scan");
-  oled.setCursor(5, 25);
-  oled.println("Object..");
-  oled.display();
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+  Serial.begin(115200);
+  Blynk.begin(BLYNK_AUTH_TOKEN, "computer", "computer2018");
 }
+
 void loop() {
-  oled.clearDisplay();
-  state1 = digitalRead(sensor);
-  if (state1 == 1) {
-    oled.clearDisplay();
-    oled.setCursor(5, 5);
-    oled.println("==========>5");
+  Blynk.run();
+}
+
+BLYNK_WRITE(V0) {
+  int va0 = param.asInt();
+  if (va0 == 1) {
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    digitalWrite(led4, 1);
     delay(200);
-    oled.clearDisplay();
-    oled.setCursor(5, 5);
-    oled.println("=========>4");
-    delay(200);
-    oled.clearDisplay();
-    oled.setCursor(5, 5);
-    oled.println("========>3");
-    delay(200);
-    oled.clearDisplay();
-    oled.setCursor(5, 5);
-    oled.println("=======>2");
-    delay(200);
-    oled.clearDisplay();
-    oled.setCursor(5, 5);
-    oled.println("=======>1");
-    delay(200);
-    oled.clearDisplay();
-    oled.setCursor(5, 5);
-    oled.println("== Please Waite ==");
-    oled.setCursor(5, 5);
-    oled.println("Sensor Scan Object");
-    digitalWrite(Relaypin, 1);
-    delay(5000);
-    digitalWrite(Relaypin, 0);
-  } if (state1 == 0) {
-    oled.clearDisplay();
-    oled.setCursor(25, 5);
-    oled.println("Yes");
-    oled.setCursor(5, 5);
-    oled.println("Object..");
-    digitalWrite(Relaypin, 1);
-    delay(200);
-    digitalWrite(Relaypin, 0);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 0);
     delay(100);
-    digitalWrite(Relaypin, 1);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    digitalWrite(led4, 1);
     delay(200);
-    digitalWrite(Relaypin, 0);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 0);
     delay(100);
-    digitalWrite(Relaypin, 1);
+    digitalWrite(led1, va0);
+    digitalWrite(led2, va0);
+    digitalWrite(led3, va0);
+    digitalWrite(led4, va0);
+  }
+}
+
+BLYNK_WRITE(V1) {
+  int va1 = param.asInt();
+  if (va1 == 1) {
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    digitalWrite(led4, 1);
     delay(200);
-    digitalWrite(Relaypin, 0);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 0);
     delay(100);
-    digitalWrite(Relaypin, 1);
-    delay(200);q
-    digitalWrite(Relaypin, 0);
-    delay(100);
-    digitalWrite(Relaypin, 1);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    digitalWrite(led4, 1);
     delay(200);
-    digitalWrite(Relaypin, 0);
-    delay(1000);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 0);
+  }
+}
+
+BLYNK_WRITE(V2) {
+  int va2 = param.asInt();
+  if (va2 == 1) {
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 1);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 0);
+    delay(100);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    digitalWrite(led4, 0);
+    delay(200);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 0);
+    delay(100);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    digitalWrite(led4, 1);
+    delay(100);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 0);
+    delay(100);
+    digitalWrite(led1, 1);
+    digitalWrite(led2, 1);
+    digitalWrite(led3, 1);
+    digitalWrite(led4, 1);
+    delay(100);
+    digitalWrite(led1, 0);
+    digitalWrite(led2, 0);
+    digitalWrite(led3, 0);
+    digitalWrite(led4, 0);
+    delay(100);
   }
 }
