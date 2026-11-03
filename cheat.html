@@ -1,0 +1,155 @@
+<html>
+  <head>
+    <title>cheat</title>
+  </head>
+  <body>
+    **main.dart**
+import 'package:flutter/material.dart';
+import 'package:flutterv1/screens/home.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const Home(),
+    );
+  }
+}
+
+**home.dart**
+import 'package:flutter/material.dart';
+
+class Home extends StatefulWidget {
+  const Home({super.key});
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              colors: [Colors.white, Colors.white],
+              radius: 1.0,
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                function(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+**function dia**
+
+ Future<void> Dialog(BuildContext context, String message) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(message),
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('ปิด', style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+**pubspec.yaml**
+
+at 61
+  assets:
+  - images/logo.jpg
+
+send img to this
+
+
+**textbox**
+
+  Widget namebox() {
+    return TextField(
+      controller: namecontrol,
+      decoration: InputDecoration(
+        labelText: 'name:',
+        labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        helperText: 'ที่แสดงใสกล่อง',
+      ),
+    );
+  }
+
+
+
+**button function**
+ Widget acceptbtn() {
+    return ElevatedButton(
+      onPressed: () {
+        Dialog(
+          context,
+          "ยินดีต้อนรับ พนักงานทุกท่าน สู่ Application SCG \nชื่อ-นามสกุล: ${nameuser.text} ${surnameuser.text}\nเบอร์โทร: ${teluser.text}",
+        );
+      },
+      child: Text('Login'),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+      ),
+    );
+  }
+
+  Widget cancelbtn() {
+    return ElevatedButton(
+      onPressed: () {
+        cleartext();
+      },
+      child: Text('Cancel'),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+      ),
+    );
+  }
+
+  Widget showButton() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[acceptbtn(), SizedBox(width: 6.0), cancelbtn()],
+    );
+  }
+
+  void cleartext() {
+    codeuser.clear();
+    nameuser.clear();
+    surnameuser.clear();
+    salaryuser.clear();
+    teluser.clear();
+  }
+}
+  </body>
+</html>
