@@ -1,10 +1,50 @@
-<html>
-  <head>
-    <title>cheat</title>
-  </head>
-  <body>
-    **main.dart**
-import 'package:flutter/material.dart';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flutter cheat sheet</title>
+<style>
+:root{--bg:#f7f8fa;--surface:#fff;--text:#1b2430;--muted:#5d6b7c;--line:#dde2e9;--code-bg:#0f1720;--code-text:#e6edf3;--accent:#1565c0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--surface:#171e27;--text:#e6edf3;--muted:#9aa7b6;--line:#2a3441;--code-bg:#0a0e13;--code-text:#e6edf3;--accent:#6cb2ff}}
+:root[data-theme="dark"]{--bg:#10151c;--surface:#171e27;--text:#e6edf3;--muted:#9aa7b6;--line:#2a3441;--code-bg:#0a0e13;--code-text:#e6edf3;--accent:#6cb2ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.7rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 28px}
+section{margin-bottom:28px}
+h2{font-size:1.05rem;margin:0 0 4px}
+h2 code{font-size:.95em;color:var(--accent)}
+.note{color:var(--muted);font-size:.9rem;margin:0 0 8px}
+.box{position:relative;background:var(--code-bg);border-radius:8px;overflow:hidden}
+pre{margin:0;padding:14px 16px;overflow-x:auto;color:var(--code-text);font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:2}
+button.copy{position:absolute;top:8px;right:8px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font:inherit;font-size:.8rem;cursor:pointer}
+button.copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fixes{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 18px;margin-bottom:28px}
+.fixes ul{margin:6px 0 0;padding-left:18px}
+</style>
+</head>
+<body>
+<main>
+<h1>Flutter cheat sheet</h1>
+<p class="sub">Login form with logo, text boxes, dialog and buttons.</p>
+
+<div class="fixes">
+<strong>What was fixed</strong>
+<ul>
+<li>Your <code>Dialog</code> function clashed with Flutter's built-in <code>Dialog</code> widget. It is now <code>showMessage</code>.</li>
+<li><code>function()</code> in <code>build</code> did not exist. The form is now built from the helpers below.</li>
+<li>The controllers (<code>nameuser</code>, <code>teluser</code>, ...) were never declared, and <code>namecontrol</code> did not match them. All are declared once and disposed.</li>
+<li><code>MaterialStateProperty</code> is deprecated. Buttons use <code>ElevatedButton.styleFrom</code>.</li>
+<li>The helpers must live inside <code>_HomeState</code>, before its closing brace.</li>
+</ul>
+</div>
+
+<section>
+<h2><code>lib/main.dart</code></h2>
+<div class="box"><pre>import 'package:flutter/material.dart';
 import 'package:flutterv1/screens/home.dart';
 
 void main() {
@@ -22,35 +62,66 @@ class MyApp extends StatelessWidget {
       home: const Home(),
     );
   }
-}
+}</pre></div>
+</section>
 
-**home.dart**
-import 'package:flutter/material.dart';
+<section>
+<h2><code>lib/screens/home.dart</code></h2>
+<p class="note">Paste the helper snippets below inside <code>_HomeState</code>, above the final <code>}</code>.</p>
+<div class="box"><pre>import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
+
   @override
-  State<Home> createState() => _HomeState();
+  State&lt;Home&gt; createState() =&gt; _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State&lt;Home&gt; {
+  final codeuser = TextEditingController();
+  final nameuser = TextEditingController();
+  final surnameuser = TextEditingController();
+  final salaryuser = TextEditingController();
+  final teluser = TextEditingController();
+
+  @override
+  void dispose() {
+    codeuser.dispose();
+    nameuser.dispose();
+    surnameuser.dispose();
+    salaryuser.dispose();
+    teluser.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: RadialGradient(
               colors: [Colors.white, Colors.white],
               radius: 1.0,
             ),
           ),
           child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                function(),
-              ],
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('images/logo.jpg', width: 150),
+                  const SizedBox(height: 16),
+                  textbox(codeuser, 'code:'),
+                  textbox(nameuser, 'name:'),
+                  textbox(surnameuser, 'surname:'),
+                  textbox(salaryuser, 'salary:'),
+                  textbox(teluser, 'tel:'),
+                  const SizedBox(height: 16),
+                  showButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -58,98 +129,123 @@ class _HomeState extends State<Home> {
     );
   }
 
+  // ---- paste the snippets below here ----
+}</pre></div>
+</section>
 
+<section>
+<h2>Dialog</h2>
+<div class="box"><pre>Future&lt;void&gt; showMessage(BuildContext context, String message) async {
+  await showDialog(
+    context: context,
+    builder: (context) =&gt; SimpleDialog(
+      title: Text(message),
+      children: &lt;Widget&gt;[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: &lt;Widget&gt;[
+            TextButton(
+              onPressed: () =&gt; Navigator.pop(context),
+              child: const Text('ปิด', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}</pre></div>
+</section>
 
-**function dia**
+<section>
+<h2><code>pubspec.yaml</code></h2>
+<p class="note">Around line 61, under <code>flutter:</code>. Indent with spaces only (no tabs), then run <code>flutter pub get</code>.</p>
+<div class="box"><pre>flutter:
+  uses-material-design: true
 
- Future<void> Dialog(BuildContext context, String message) async {
-    showDialog(
-      context: context,
-      builder: (context) => SimpleDialog(
-        title: Text(message),
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('ปิด', style: TextStyle(color: Colors.red)),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-
-
-**pubspec.yaml**
-
-at 61
   assets:
-  - images/logo.jpg
+    - images/logo.jpg</pre></div>
+<p class="note" style="margin-top:8px">Put the file at <code>images/logo.jpg</code> in the project root, next to <code>lib/</code>.</p>
+</section>
 
-send img to this
-
-
-**textbox**
-
-  Widget namebox() {
-    return TextField(
-      controller: namecontrol,
+<section>
+<h2>Text box</h2>
+<div class="box"><pre>Widget textbox(TextEditingController controller, String label) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 6),
+    child: TextField(
+      controller: controller,
       decoration: InputDecoration(
-        labelText: 'name:',
-        labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        labelText: label,
+        labelStyle: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
         helperText: 'ที่แสดงใสกล่อง',
       ),
-    );
-  }
+    ),
+  );
+}</pre></div>
+</section>
 
-
-
-**button function**
- Widget acceptbtn() {
-    return ElevatedButton(
-      onPressed: () {
-        Dialog(
-          context,
-          "ยินดีต้อนรับ พนักงานทุกท่าน สู่ Application SCG \nชื่อ-นามสกุล: ${nameuser.text} ${surnameuser.text}\nเบอร์โทร: ${teluser.text}",
-        );
-      },
-      child: Text('Login'),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-      ),
-    );
-  }
-
-  Widget cancelbtn() {
-    return ElevatedButton(
-      onPressed: () {
-        cleartext();
-      },
-      child: Text('Cancel'),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-      ),
-    );
-  }
-
-  Widget showButton() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[acceptbtn(), SizedBox(width: 6.0), cancelbtn()],
-    );
-  }
-
-  void cleartext() {
-    codeuser.clear();
-    nameuser.clear();
-    surnameuser.clear();
-    salaryuser.clear();
-    teluser.clear();
-  }
+<section>
+<h2>Buttons</h2>
+<div class="box"><pre>Widget acceptbtn() {
+  return ElevatedButton(
+    onPressed: () {
+      showMessage(
+        context,
+        "ยินดีต้อนรับ พนักงานทุกท่าน สู่ Application SCG \n"
+        "ชื่อ-นามสกุล: ${nameuser.text} ${surnameuser.text}\n"
+        "เบอร์โทร: ${teluser.text}",
+      );
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.green,
+      foregroundColor: Colors.white,
+    ),
+    child: const Text('Login'),
+  );
 }
-  </body>
+
+Widget cancelbtn() {
+  return ElevatedButton(
+    onPressed: cleartext,
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.red,
+      foregroundColor: Colors.white,
+    ),
+    child: const Text('Cancel'),
+  );
+}
+
+Widget showButton() {
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    children: &lt;Widget&gt;[acceptbtn(), const SizedBox(width: 6.0), cancelbtn()],
+  );
+}
+
+void cleartext() {
+  codeuser.clear();
+  nameuser.clear();
+  surnameuser.clear();
+  salaryuser.clear();
+  teluser.clear();
+}</pre></div>
+</section>
+</main>
+<script>
+document.querySelectorAll('.box').forEach(function(box){
+  var b=document.createElement('button');
+  b.className='copy';b.type='button';b.textContent='Copy';
+  b.addEventListener('click',function(){
+    var t=box.querySelector('pre').innerText;
+    try{
+      navigator.clipboard.writeText(t).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)},function(){b.textContent='Select + copy'});
+    }catch(e){b.textContent='Select + copy'}
+  });
+  box.appendChild(b);
+});
+</script>
+</body>
 </html>
