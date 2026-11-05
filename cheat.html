@@ -175,6 +175,29 @@ class _HomeState extends State&lt;Home&gt; {
     teluser.clear();
   }
 }</pre></div>
+  <br><br>ปุ่ม but ไอคอน
+  <div class=box><pre>
+    Widget registerbtn() {
+    return ElevatedButton(
+      onPressed: () {
+        Dialog(
+          context,
+          "ชื่อผู้ป่วย: คุณ ${namecontrol.text} ${surnamecontrol.text}   อาการป่วย: ${detailcontrol.text}",
+        );
+      },
+      child: Row(
+        children: [
+          Icon(Icons.check_circle),
+          Text('Register'),
+        ],
+      ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+      ),
+    );
+  }
+          </pre>
+  </div>
 </section>
 </main>
 <script>
