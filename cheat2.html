@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flutter cheat sheet – Nan DD Hotel</title>
+<style>
+:root{--bg:#f7f8fa;--surface:#fff;--text:#1b2430;--muted:#5d6b7c;--line:#dde2e9;--code-bg:#0f1720;--code-text:#e6edf3;--accent:#1565c0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--surface:#171e27;--text:#e6edf3;--muted:#9aa7b6;--line:#2a3441;--code-bg:#0a0e13;--accent:#6cb2ff}}
+:root[data-theme="dark"]{--bg:#10151c;--surface:#171e27;--text:#e6edf3;--muted:#9aa7b6;--line:#2a3441;--code-bg:#0a0e13;--accent:#6cb2ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.7rem;margin:0 0 4px}
+section{margin-bottom:28px}
+h2{font-size:1.05rem;margin:0 0 4px}
+h2 code{color:var(--accent)}
+.note{color:var(--muted);font-size:.9rem;margin:0 0 8px}
+.box{position:relative;background:var(--code-bg);border-radius:8px;overflow:hidden}
+pre{margin:0;padding:14px 16px;overflow-x:auto;color:var(--code-text);font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:2}
+button.copy{position:absolute;top:8px;right:8px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font:inherit;font-size:.8rem;cursor:pointer}
+</style>
+</head>
+<body>
+<main>
+<h1>Flutter cheat sheet</h1>
+<p class="note">บทที่ 3 – ตรวจสอบค่าและคำนวณค่าเช่าห้องพัก (vip 700/วัน, air 500/วัน, ส่วนลด 5%)</p>
+
+<section>
+<h2>สร้างโปรเจ็ค</h2>
+<p class="note">สร้างโฟลเดอร์ lib/screen/home.dart และโฟลเดอร์ images/ (ใส่ logo_pro.png)</p>
+<div class="box"><pre>flutter create ex2
+flutter run</pre></div>
+</section>
+
+<section>
+<h2><code>main.dart</code></h2>
+<div class="box"><pre>import 'package:ex2/screen/home.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.orange),
+      home: Home(),
+    );
+  }
+}</pre></div>
+</section>
+
+<section>
+<h2><code>home.dart</code></h2>
+<p class="note">เมธอดอื่นด้านล่างวางต่อใน class _HomeState แล้วปิด } ท้ายไฟล์</p>
+<div class="box"><pre>import 'package:flutter/material.dart';
+
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  _HomeState createState() =&gt; _HomeState();
+}
+
+class _HomeState extends State&lt;Home&gt; {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Nan DD Hotel Application')),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: &lt;Color&gt;[Colors.white, Colors.yellow.shade200],
+            radius: 1.0,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: &lt;Widget&gt;[
+                SizedBox(height: 16.0),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }</pre></div>
+</section>
+
+<section>
+<h2>ตัวแปร controller</h2>
+<p class="note">วางใน class _HomeState เหนือ Widget build</p>
+<div class="box"><pre>  var ctrlname = TextEditingController();
+  var ctrlsurname = TextEditingController();
+  var ctrlroom = TextEditingController();
+  var ctrlnum = TextEditingController();</pre></div>
+</section>
+
+<section>
+<h2>เรียกใช้ใน children</h2>
+<p class="note">ถ้าไม่ต้องการส่วนนี้ ลบทั้งบล็อกได้ แต่หน้าแอปจะไม่แสดงอะไรเลย</p>
+<div class="box"><pre>                showLogo(),
+                showBenner(),
+                nameText(),
+                surnameText(),
+                roomText(),
+                numText(),
+                SizedBox(height: 8.0),
+                showButton(),</pre></div>
+</section>
+
+<section>
+<h2><code>pubspec.yaml</code></h2>
+<p class="note">ใต้ flutter: (ย่อหน้าให้ตรง)</p>
+<div class="box"><pre>  assets:
+    - images/logo_pro.png</pre></div>
+</section>
+
+<section>
+<h2>logo + banner</h2>
+<div class="box"><pre>  Widget showLogo() {
+    return Container(
+      width: 100.0,
+      child: Image.asset('images/logo_pro.png'),
+    );
+  }
+
+  Widget showBenner() {
+    return Text(
+      'Nan DD Hotel',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 32.0,
+        color: Colors.purple,
+      ),
+    );
+  }</pre></div>
+</section>
+
+<section>
+<h2>textbox</h2>
+<div class="box"><pre>  Widget inputBox(TextEditingController c, IconData icon, String label,
+      String help, [TextInputType? type]) {
+    return TextField(
+      controller: c,
+      keyboardType: type,
+      decoration: InputDecoration(
+        icon: Icon(icon, color: Colors.purple, size: 32.0),
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold),
+        helperText: help,
+      ),
+    );
+  }
+
+  Widget nameText() =&gt;
+      inputBox(ctrlname, Icons.face, 'Name:', 'Type Your Name:');
+
+  Widget surnameText() =&gt; inputBox(
+      ctrlsurname, Icons.change_circle_rounded, 'Surname:', 'Type Your Surname:');
+
+  Widget roomText() =&gt;
+      inputBox(ctrlroom, Icons.hotel, 'Room:', 'Type Your Room: (vip / air)');
+
+  Widget numText() =&gt; inputBox(ctrlnum, Icons.calendar_month, 'Num:',
+      'Type Your Numday:', TextInputType.number);</pre></div>
+</section>
+
+<section>
+<h2>function dia</h2>
+<div class="box"><pre>  Future&lt;void&gt; normalDialog(BuildContext context, String message) async {
+    showDialog(
+      context: context,
+      builder: (context) =&gt; SimpleDialog(
+        title: Text(message),
+        children: &lt;Widget&gt;[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: &lt;Widget&gt;[
+              TextButton(
+                onPressed: () =&gt; Navigator.pop(context),
+                child: Text('Ok', style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }</pre></div>
+</section>
+
+<section>
+<h2>clearText</h2>
+<div class="box"><pre>  void clearText() {
+    ctrlname.clear();
+    ctrlsurname.clear();
+    ctrlroom.clear();
+    ctrlnum.clear();
+  }</pre></div>
+</section>
+
+<section>
+<h2>button function</h2>
+<p class="note">ปิดท้ายไฟล์ด้วย } ของ class</p>
+<div class="box"><pre>  Widget signinButton() {
+    return ElevatedButton(
+      onPressed: () {
+        if (ctrlname.text.isEmpty ||
+            ctrlsurname.text.isEmpty ||
+            ctrlroom.text.isEmpty ||
+            ctrlnum.text.isEmpty) {
+          normalDialog(context, "กรุณากรอกข้อมูลให้ครบถ้วนด้วยครับ");
+          return;
+        }
+        int? num = int.tryParse(ctrlnum.text);
+        if (num == null || num &lt;= 0) {
+          normalDialog(context, "จำนวนวันต้องเป็นตัวเลขมากกว่า 0");
+          return;
+        }
+        String room = ctrlroom.text.trim().toLowerCase();
+        int rent;
+        double discount, total;
+        if (room == 'vip') {
+          rent = num * 700;
+        } else {
+          rent = num * 500;
+        }
+        discount = rent * 5 / 100;
+        total = rent - discount;
+        normalDialog(
+          context,
+          'รายการเช่าห้องพักของท่านเรียบร้อย\n'
+          'ชื่อ-นามสกุล: ${ctrlname.text} ${ctrlsurname.text}\n'
+          'ห้องพัก: ${ctrlroom.text}\n'
+          'ค่าเช่า: $rent\n'
+          'ส่วนลด: $discount\n'
+          'ค่าเช่าสุทธิ: $total',
+        );
+      },
+      child: Text('Submit'),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.green),
+      ),
+    );
+  }
+
+  Widget cancelButton() {
+    return ElevatedButton(
+      onPressed: () {
+        clearText();
+      },
+      child: Text('Cancel'),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.red),
+      ),
+    );
+  }
+
+  Widget showButton() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [signinButton(), SizedBox(width: 8.0), cancelButton()],
+    );
+  }
+}</pre></div>
+</section>
+
+<section>
+<h2>สูตรคำนวณ</h2>
+<div class="box"><pre>rent     = num * (room == 'vip' ? 700 : 500);
+discount = rent * 5 / 100;
+total    = rent - discount;</pre></div>
+</section>
+
+</main>
+<script>
+document.querySelectorAll('.box').forEach(function(box){
+  var b=document.createElement('button');
+  b.className='copy';b.type='button';b.textContent='Copy';
+  b.addEventListener('click',function(){
+    var t=box.querySelector('pre').innerText;
+    try{navigator.clipboard.writeText(t).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)},function(){b.textContent='Select + copy'})}catch(e){b.textContent='Select + copy'}
+  });
+  box.appendChild(b);
+});
+</script>
+</body>
+</html>
